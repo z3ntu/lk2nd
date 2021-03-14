@@ -68,6 +68,8 @@
 #include <libfdt.h>
 #include <dev_tree.h>
 #include <lk2nd.h>
+
+#include "fs_boot.h"
 #endif
 
 #include <reboot.h>
@@ -2318,7 +2320,19 @@ int copy_dtb(uint8_t *boot_image_start, unsigned int scratch_offset)
 }
 #endif
 
-void cmd_boot(const char *arg, void *data, unsigned sz)
+void cmd_boot(const char *arg, void *data, unsigned sz) {
+	real_cmd_boot(arg, data, sz, TRUE, fastboot_fail);
+}
+
+void print_to_con(char *data) {
+	dprintf(CRITICAL, "print: %s\n", data);
+}
+
+void aboot_boot_image(void *data, unsigned sz) {
+	real_cmd_boot(NULL, data, sz, FALSE, print_to_con);
+}
+
+void real_cmd_boot(const char *arg, void *data, unsigned sz, bool is_fastboot, void (*prntfunc)(char*))
 {
 	unsigned kernel_actual;
 	unsigned ramdisk_actual;
@@ -2344,13 +2358,13 @@ void cmd_boot(const char *arg, void *data, unsigned sz)
 #if VERIFIED_BOOT
 	if(!device.is_unlocked)
 	{
-		fastboot_fail("unlock device to use this command");
+		prntfunc("unlock device to use this command");
 		return;
 	}
 #endif
 
 	if (sz < sizeof(hdr)) {
-		fastboot_fail("invalid bootimage header");
+		prntfunc("invalid bootimage header");
 		return;
 	}
 
@@ -2381,7 +2395,7 @@ void cmd_boot(const char *arg, void *data, unsigned sz)
 
 	/* Checking to prevent oob access in read_der_message_length */
 	if (image_actual > sz) {
-		fastboot_fail("bootimage header fields are invalid");
+		prntfunc("bootimage header fields are invalid");
 		return;
 	}
 	sig_size = sz - image_actual;
@@ -2393,7 +2407,7 @@ void cmd_boot(const char *arg, void *data, unsigned sz)
 		image_actual = ADD_OF(image_actual, sig_actual);
 
 		if (image_actual > sz) {
-			fastboot_fail("bootimage header fields are invalid");
+			prntfunc("bootimage header fields are invalid");
 			return;
 		}
 	}
@@ -2407,7 +2421,7 @@ void cmd_boot(const char *arg, void *data, unsigned sz)
 	 */
 	if ((target_get_max_flash_size() - (image_actual - sig_actual)) < page_size)
 	{
-		fastboot_fail("booimage: size is greater than boot image buffer can hold");
+		prntfunc("booimage: size is greater than boot image buffer can hold");
 		return;
 	}
 
@@ -2519,19 +2533,21 @@ void cmd_boot(const char *arg, void *data, unsigned sz)
 					hdr->kernel_size, dtb_offset,
 					(void *)hdr->tags_addr);
 		if (!dtb) {
-			fastboot_fail("dtb not found");
+			prntfunc("dtb not found");
 			return;
 		}
 	}
 #endif
 
-	fastboot_okay("");
-	fastboot_stop();
+	if (is_fastboot) {
+		fastboot_okay("");
+		fastboot_stop();
+	}
 
 	boot_linux((void*) hdr->kernel_addr, (void*) hdr->tags_addr,
 		   (const char*) hdr->cmdline, board_machtype(),
 		   (void*) hdr->ramdisk_addr, hdr->ramdisk_size);
-}
+} // -------------------------------------------------------------------------
 
 void cmd_erase_nand(const char *arg, void *data, unsigned sz)
 {
@@ -3906,6 +3922,8 @@ void aboot_init(const struct app_descriptor *app)
 	unsigned reboot_mode = 0;
 	bool boot_into_fastboot = false;
 
+	size_t loaded_file = 0;
+
 	/* Setup page size information for nv storage */
 	if (target_is_emmc_boot())
 	{
@@ -4009,11 +4027,27 @@ void aboot_init(const struct app_descriptor *app)
 #endif
 #endif
 
+	/* Log stuff for fs-boot */
+	fsboot_test();
+
 normal_boot:
 	if (!boot_into_fastboot)
 	{
 		if (target_is_emmc_boot())
 		{
+			dprintf(CRITICAL, " *** Trying fs boot.\n");
+			/* Try to boot from first fs we can find */
+			loaded_file = fsboot_boot_first(target_get_scratch_address(), target_get_max_flash_size());
+
+			dprintf(CRITICAL, " *** loaded file.\n");
+
+			if (loaded_file > 0) {
+				aboot_boot_image(target_get_scratch_address(), target_get_max_flash_size());
+			}
+
+			dprintf(CRITICAL, " *** failed.\n");
+
+
 #if RECOVERY_MESSAGES
 			if(emmc_recovery_init())
 				dprintf(ALWAYS,"error in emmc_recovery_init\n");
