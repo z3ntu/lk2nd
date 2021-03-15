@@ -248,6 +248,12 @@ int partition_publish(const char *device, off_t offset)
 				partdev->label = strdup((char*)name);
 				partdev->is_gpt = true;
 
+				/* Sometimes we need subpartitions */
+				/* Recursion go brrrrr */
+				/* FIXME: I wonder if it can accidentaly find
+				 * an .img file with mbr table and publish it... */
+				partition_publish(subdevice, 0);
+
 				count++;
 			}
 		}
