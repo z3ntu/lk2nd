@@ -22,10 +22,6 @@
 	fairphone-fp2 {
 		model = "Fairphone 2";
 		compatible = "fairphone,fp2";
-
-		// FIXME
-		//lk2nd,keys =
-		//	<KEY_VOLUMEDOWN PM_GPIO(2) (PM_GPIO_PULL_UP_30 | GPIO_ACTIVE_LOW)>;
 		lk2nd,match-panel;
 
 		panel {
@@ -36,6 +32,15 @@
 			};
 			qcom,mdss_dsi_s6d6fa1_1080p_video {
 				compatible = "fairphone,fp2-panel-s6d6fa1";
+			};
+		};
+
+		gpio-keys {
+			compatible = "gpio-keys";
+
+			volume-down {
+				lk2nd,code = <KEY_VOLUMEDOWN>;
+				gpios = <&pmic 2 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 			};
 		};
 	};
