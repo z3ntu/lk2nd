@@ -10,7 +10,8 @@
  * screen. So to get continous splash initialized by the first bootloader we
  * need to include these dts parts here.
  */
-#include "msm8974pro-sony-xperia-shinano-leo-mdss.dtsi"
+//#include "msm8974pro-sony-xperia-shinano-leo-mdss.dtsi"
+#include "sony-leo/sony-leo-panels.dtsi"
 
 / {
 	// There are devices that identify themselves as msm8974pro-ac-pm8941-mtp,

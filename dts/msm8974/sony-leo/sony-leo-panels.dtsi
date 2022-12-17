@@ -1,0 +1,80 @@
+/ {
+	msmgpio: msmgpio {};
+	gdsc_mdss: gdsc_mdss {};
+	pm8941_l2: pm8941_l2 {};
+	pm8941_l12: pm8941_l12 {};
+	pm8941_l22: pm8941_l22 {};
+	pm8941_lvs3: pm8941_lvs3 {};
+	cont_splash_mem: cont_splash_mem {};
+
+	soc {
+		// FIXME something's needed here
+		qcom,mdss_dsi@fd922800 {
+			compatible = "qcom,mdss-dsi-ctrl";
+			label = "MDSS DSI CTRL->0";
+			cell-index = <0x00>;
+			reg = <0xfd922800 0x1f8 0xfd922b00 0x2b0 0xfdf30000 0x108>;
+			reg-names = "dsi_ctrl\0dsi_phy\0mmss_misc_phys";
+			vdd-supply = <0x24>;
+			vddio-supply = <0x02>;
+			vdda-supply = <0x25>;
+			qcom,mdss-fb-map = <0x26>;
+			qcom,mdss-mdp = <0x27>;
+			qcom,platform-reset-gpio = <0x28 0x13 0x00>;
+			qcom,platform-enable-gpio = <0x28 0x14 0x00>;
+			qcom,platform-te-gpio = <0x05 0x0c 0x00>;
+			qcom,platform-strength-ctrl = [ff 06];
+			qcom,platform-bist-ctrl = [00 00 b1 ff 00 00];
+			qcom,platform-regulator-settings = [07 09 03 00 20 00 01];
+			qcom,platform-lane-config;
+			qcom,dsi-pref-prim-pan = <0x29>;
+			linux,phandle = <0x23>;
+			phandle = <0x23>;
+
+			qcom,platform-supply-entry1 {
+				qcom,supply-name = "vdd";
+				qcom,supply-min-voltage = <0x00>;
+				qcom,supply-max-voltage = <0x00>;
+				qcom,supply-enable-load = <0x186a0>;
+				qcom,supply-disable-load = <0x64>;
+				qcom,supply-pre-on-sleep = <0x00>;
+				qcom,supply-post-on-sleep = <0x00>;
+				qcom,supply-pre-off-sleep = <0x00>;
+				qcom,supply-post-off-sleep = <0x00>;
+			};
+
+			qcom,platform-supply-entry2 {
+				qcom,supply-name = "vddio";
+				qcom,supply-min-voltage = <0x1b7740>;
+				qcom,supply-max-voltage = <0x1b7740>;
+				qcom,supply-enable-load = <0x186a0>;
+				qcom,supply-disable-load = <0x64>;
+				qcom,supply-pre-on-sleep = <0x00>;
+				qcom,supply-post-on-sleep = <0x00>;
+				qcom,supply-pre-off-sleep = <0x00>;
+				qcom,supply-post-off-sleep = <0x00>;
+			};
+
+			qcom,platform-supply-entry3 {
+				qcom,supply-name = "vdda";
+				qcom,supply-min-voltage = <0x124f80>;
+				qcom,supply-max-voltage = <0x124f80>;
+				qcom,supply-enable-load = <0x186a0>;
+				qcom,supply-disable-load = <0x64>;
+				qcom,supply-pre-on-sleep = <0x00>;
+				qcom,supply-post-on-sleep = <0x00>;
+				qcom,supply-pre-off-sleep = <0x00>;
+				qcom,supply-post-off-sleep = <0x00>;
+			};
+		};
+	};
+};
+
+#include "msm8974.dtsi"
+#include "msm8974-mdss.dtsi"
+#include "msm8974-mdss-pll.dtsi"
+#include "msm8974pro-pm8941.dtsi"
+#include "msm-pm8941.dtsi"
+#include "msm8974pro-ab-shinano_common.dtsi"
+#include "msm8974pro-ac-shinano_leo.dtsi"
+#include "dsi-panel-somc-leo.dtsi"

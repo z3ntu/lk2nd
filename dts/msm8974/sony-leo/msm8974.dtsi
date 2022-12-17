@@ -1,0 +1,35 @@
+/* Copyright (c) 2012-2015, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/ {
+	soc: soc { };
+};
+
+&soc {
+	#address-cells = <1>;
+	#size-cells = <1>;
+	ranges;
+
+	spmi_bus: qcom,spmi@fc4c0000 {
+		cell-index = <0>;
+		compatible = "qcom,spmi-pmic-arb";
+		reg-names = "core", "intr", "cnfg";
+		reg = <0xfc4cf000 0x1000>,
+		      <0Xfc4cb000 0x1000>,
+		      <0Xfc4ca000 0x1000>;
+		/* 190,ee0_krait_hlos_spmi_periph_irq */
+		/* 187,channel_0_krait_hlos_trans_done_irq */
+		interrupts = <0 190 0 0 187 0>;
+		qcom,pmic-arb-ee = <0>;
+		qcom,pmic-arb-channel = <0>;
+	};
+};
