@@ -13,10 +13,12 @@
 &spmi_bus {
 	#address-cells = <1>;
 	#size-cells = <0>;
+	interrupt-controller;
 	#interrupt-cells = <3>;
 };
 
 &pm8941_lsid0 {
+	spmi-slave-container;
 	#address-cells = <1>;
 	#size-cells = <1>;
 
@@ -32,6 +34,7 @@
 };
 
 &pm8941_lsid1 {
+	spmi-slave-container;
 	#address-cells = <1>;
 	#size-cells = <1>;
 

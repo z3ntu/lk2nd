@@ -11,6 +11,7 @@
  * need to include these dts parts here.
  */
 //#include "msm8974pro-sony-xperia-shinano-leo-mdss.dtsi"
+//#include "msm8974pro-sony-xperia-shinano-leo-mdss2.dtsi"
 #include "sony-leo/sony-leo-panels.dtsi"
 
 / {
