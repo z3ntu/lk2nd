@@ -5,13 +5,13 @@
 
 	msmgpio: msmgpio {};
 	gdsc_mdss: gdsc_mdss {};
-	pm8941_l2: pm8941_l2 {};
-	pm8941_l12: pm8941_l12 {};
-	pm8941_l22: pm8941_l22 {};
-	pm8941_lvs3: pm8941_lvs3 {};
+	//pm8941_l2: pm8941_l2 {};
+	//pm8941_l12: pm8941_l12 {};
+	//pm8941_l22: pm8941_l22 {};
+	//pm8941_lvs3: pm8941_lvs3 {};
 	cont_splash_mem: cont_splash_mem {};
 	mdss_dsi0: mdss_dsi0 {};
-	shinano_panel_power_supply: shinano_panel_power_supply {};
+	//shinano_panel_power_supply: shinano_panel_power_supply {};
 
 	soc {
 		// FIXME something's needed here
@@ -69,8 +69,10 @@
 #include "msm8974.dtsi"
 #include "msm8974-mdss.dtsi"
 #include "msm8974-mdss-pll.dtsi"
+#include "msm8974-v2.dtsi"
 #include "msm8974pro-pm8941.dtsi"
 #include "msm-pm8941.dtsi"
 #include "msm8974pro-ab-shinano_common.dtsi"
 #include "msm8974pro-ac-shinano_leo.dtsi"
-#include "dsi-panel-somc-leo.dtsi"
+//#include "dsi-panel-somc-leo.dtsi"
+#include "dsi-panel-leo.dtsi"
