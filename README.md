@@ -27,6 +27,7 @@ and then loaded by lk2nd.
 - Samsung Galaxy A6+ (2018) - SM-A605FN
 - Xiaomi Redmi 4X - santoni
 - Xiaomi Redmi Note 4X Snapdragon - mido
+- Xiaomi Redmi 4 Prime - markw
 - Xiaomi Redmi Note 5 / 5 Plus Snapdragon - vince
 - Meizu M6 Note - m1721
 - Motorola Moto G7 Power - ocean
