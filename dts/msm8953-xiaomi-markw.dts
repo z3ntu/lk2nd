@@ -12,4 +12,12 @@
 	model = "Xiaomi Redmi 4 Prime (markw)";
 	compatible = "qcom,msm8953-markw", "qcom,msm8953-xiaomi", "xiaomi,markw", "qcom,msm8953", "lk2nd,device";
 	lk2nd,pstore = <0x9ff00000 0x00100000>;
+
+	panel {
+		compatible = "xiaomi,markw-panel";
+
+		qcom,mdss_dsi_nt35596_ebbg_1080p_video {
+			compatible = "mdss,nt35596-ebbg";
+		};
+	};
 };
