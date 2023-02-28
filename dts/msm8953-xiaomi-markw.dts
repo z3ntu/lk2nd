@@ -10,7 +10,7 @@
 	qcom,board-id = <0x1000b 1>;
 
 	model = "Xiaomi Redmi 4 Prime (markw)";
-	compatible = "qcom,msm8953-markw", "qcom,msm8953-xiaomi", "xiaomi,markw", "qcom,msm8953", "lk2nd,device";
+	compatible = "xiaomi,markw", "qcom,msm8953", "lk2nd,device";
 	lk2nd,pstore = <0x9ff00000 0x00100000>;
 
 	panel {
@@ -18,6 +18,9 @@
 
 		qcom,mdss_dsi_nt35596_ebbg_1080p_video {
 			compatible = "mdss,nt35596-ebbg";
+		};
+		qcom,mdss_dsi_r63350_1080p_video {
+			compatible = "mdss,r63350";
 		};
 	};
 };
